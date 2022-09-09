@@ -64,13 +64,21 @@ function draw() {
   } else if (leftPressed) {
     paddleX = Math.max(paddleX - 7, 0);
   }
+  // const test = [300, 600, 780, 150];
+  // console.log(...test);
+  // console.log(Math.min(...test), Math.max(...test));
 
   //Bouncing the ball on the walls
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
   }
-  if (y + dy > canvas.height - ballRadius || y + dx < ballRadius) {
+  if (y + dx < ballRadius) {
     dy = -dy;
+  } else if (y + dy > canvas.height - ballRadius) {
+    //Defining game over logic
+    alert("GAME OVER");
+    document.location.reload();
+    clearInterval(interval);
   }
 
   x += dx;
@@ -96,8 +104,5 @@ function keyUpHandler(e) {
   }
 }
 
-setInterval(draw, 10);
-
-// const test = [300, 600, 780, 150];
-// console.log(...test);
-// console.log(Math.min(...test), Math.max(...test));
+// setInterval(draw, 10);
+const interval = setInterval(draw, 10);
