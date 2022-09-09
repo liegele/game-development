@@ -31,7 +31,6 @@ const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
 let rightPressed = false;
 let leftPressed = false;
-console.log(paddleX);
 
 function drawBall() {
   ctx.beginPath();
@@ -89,8 +88,6 @@ function draw() {
 
   x += dx;
   y += dy;
-
-  console.log(paddleX, paddleX + paddleWidth);
 }
 
 document.addEventListener("keydown", keyDownHandler, false);
