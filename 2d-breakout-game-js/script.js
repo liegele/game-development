@@ -21,21 +21,60 @@ const ctx = canvas.getContext("2d");
 // // ctx.stroke();
 // ctx.closePath();
 
+const COLOR = "#0095DD";
+
 let x = canvas.width / 2;
 let y = canvas.height - 30;
 let dx = 2;
 let dy = -2;
+
 const ballRadius = 5;
+
 const paddleHeight = 10;
 const paddleWidth = 75;
+
 let paddleX = (canvas.width - paddleWidth) / 2;
+
 let rightPressed = false;
 let leftPressed = false;
+
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
+
+const bricks = [];
+
+for (let c = 0; c < brickColumnCount; c++) {
+  bricks[c] = [];
+  for (let r = 0; r < brickRowCount; r++) {
+    bricks[c][r] = { x: 0, y: 0 };
+  }
+}
+
+function drawBricks() {
+  for (let c = 0; c < brickColumnCount; c++) {
+    for (let r = 0; r < brickRowCount; r++) {
+      const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
+      const brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+      bricks[c][r].x = brickX;
+      bricks[c][r].y = brickY;
+      ctx.beginPath();
+      ctx.rect(brickX, brickY, brickWidth, brickHeight);
+      ctx.fillStyle = COLOR;
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+}
 
 function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI * 2, false);
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = COLOR;
   ctx.fill();
   ctx.closePath();
 }
@@ -43,7 +82,7 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = "#0095DD";
+  ctx.fillStyle = COLOR;
   ctx.fill();
   ctx.closePath();
 }
@@ -51,6 +90,9 @@ function drawPaddle() {
 function draw() {
   //Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  //Draw bricks
+  drawBricks();
 
   //Draw a blue circle on canvas
   drawBall();
