@@ -48,6 +48,8 @@ const brickOffsetLeft = 30;
 
 const bricks = [];
 
+let score = 0;
+
 for (let c = 0; c < brickColumnCount; c++) {
   bricks[c] = [];
   for (let r = 0; r < brickRowCount; r++) {
@@ -104,6 +106,9 @@ function draw() {
 
   //Collision detection for ball on bricks
   collisionDetection();
+
+  //Drawing score
+  drawScore();
 
   //Moving paddle to left or right
   if (rightPressed) {
@@ -169,10 +174,17 @@ function collisionDetection() {
         ) {
           dy = -dy;
           b.status = 0;
+          score++;
         }
       }
     }
   }
+}
+
+function drawScore() {
+  ctx.font = "14px Arial";
+  ctx.fillStyle = COLOR;
+  ctx.fillText(`Score: ${score}`, 8, 20);
 }
 
 // setInterval(draw, 10);
