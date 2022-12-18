@@ -3,6 +3,7 @@ window.addEventListener('load', () => {
   const ctx = canvas.getContext('2d');
   canvas.width = 800;
   canvas.height = 720;
+  const enemies = [];
 
   class InputHandler {
     constructor() {
@@ -132,7 +133,36 @@ window.addEventListener('load', () => {
     }
   }
 
-  class Enemy {}
+  class Enemy {
+    constructor(gameWidth, gameHeight) {
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+      this.width = 160;
+      this.height = 119;
+      this.image = document.getElementById('enemyImage');
+      this.x = this.gameWidth;
+      this.y = this.gameHeight - this.height;
+      this.frameX = 0;
+    }
+
+    draw(context) {
+      context.drawImage(
+        this.image,
+        this.frameX * this.width,
+        0,
+        this.width,
+        this.height,
+        this.x,
+        this.y,
+        this.width,
+        this.height
+      );
+    }
+
+    update() {
+      this.x--;
+    }
+  }
 
   function handleEnemies() {}
 
@@ -140,6 +170,7 @@ window.addEventListener('load', () => {
 
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
+  const enemy1 = new Enemy(canvas.width, canvas.height);
   const background = new Background(canvas.gameWidth, canvas.gameHeight);
   //   player.draw(ctx);
   //   player.update();
@@ -150,6 +181,8 @@ window.addEventListener('load', () => {
     background.update();
     player.draw(ctx);
     player.update(input);
+    enemy1.draw(ctx);
+    enemy1.update();
     requestAnimationFrame(animate);
   }
   animate();
