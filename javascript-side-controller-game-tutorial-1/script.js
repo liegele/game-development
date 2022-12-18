@@ -101,7 +101,36 @@ window.addEventListener('load', () => {
     }
   }
 
-  class Background {}
+  class Background {
+    constructor(gameWidth, gameHeight) {
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+      this.image = document.getElementById('backgroundImage');
+      this.x = 0;
+      this.y = 0;
+      this.width = 2400;
+      this.height = 720;
+      this.speed = 4;
+    }
+
+    draw(context) {
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
+      context.drawImage(
+        this.image,
+        this.x + this.width - this.speed,
+        this.y,
+        this.width,
+        this.height
+      );
+    }
+
+    update() {
+      this.x -= this.speed;
+      if (this.x < 0 - this.width) {
+        this.x = 0;
+      }
+    }
+  }
 
   class Enemy {}
 
@@ -111,11 +140,14 @@ window.addEventListener('load', () => {
 
   const input = new InputHandler();
   const player = new Player(canvas.width, canvas.height);
+  const background = new Background(canvas.gameWidth, canvas.gameHeight);
   //   player.draw(ctx);
   //   player.update();
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw(ctx);
+    background.update();
     player.draw(ctx);
     player.update(input);
     requestAnimationFrame(animate);
