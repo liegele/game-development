@@ -51,8 +51,8 @@ window.addEventListener('load', () => {
     }
 
     draw(context) {
-      context.fillStyle = 'white';
-      context.fillRect(this.x, this.y, this.width, this.height);
+      // context.fillStyle = 'white';
+      // context.fillRect(this.x, this.y, this.width, this.height);
       context.drawImage(
         this.image,
         this.frameX * this.width,
@@ -166,7 +166,7 @@ window.addEventListener('load', () => {
   }
 
   function handleEnemies(deltaTime) {
-    console.log(enemyInterval + randomEnemyInterval);
+    // console.log(enemyInterval + randomEnemyInterval);
     if (enemyTimer > enemyInterval + randomEnemyInterval) {
       enemies.push(new Enemy(canvas.width, canvas.height));
       randomEnemyInterval = Math.random() * 1000 + 500;
@@ -196,7 +196,7 @@ window.addEventListener('load', () => {
     lastTime = timeStamp;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     background.draw(ctx);
-    background.update();
+    // background.update();
     player.draw(ctx);
     player.update(input);
     handleEnemies(deltaTime);
