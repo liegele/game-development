@@ -26,6 +26,8 @@ window.addEventListener('load', () => {
         x: 0,
         y: 0,
       };
+
+      this.rotation = 0;
     }
 
     draw() {
@@ -39,15 +41,79 @@ window.addEventListener('load', () => {
         this.height
       );
     }
+
+    update() {
+      this.position.x += this.velocity.x;
+      this.draw();
+    }
   }
 
   const player = new Player();
 
+  const keys = {
+    a: {
+      pressed: false,
+    },
+    d: {
+      pressed: false,
+    },
+    space: {
+      pressed: false,
+    },
+  };
+
   function animate() {
-    requestAnimationFrame(animate);
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    player.draw();
+
+    if (keys.a.pressed && player.position.x >= 0) {
+      player.velocity.x = -5;
+    } else if (
+      keys.d.pressed &&
+      player.position.x <= canvas.width - player.width
+    ) {
+      player.velocity.x = 5;
+    } else {
+      player.velocity.x = 0;
+    }
+
+    player.update();
+    requestAnimationFrame(animate);
   }
   animate();
+
+  window.addEventListener('keydown', ({ key }) => {
+    console.log(key);
+    switch (key) {
+      case 'a':
+        console.log('left');
+        keys.a.pressed = true;
+        break;
+      case 'd':
+        console.log('right');
+        keys.d.pressed = true;
+        break;
+      case ' ':
+        console.log('space');
+        keys.space.pressed = true;
+        break;
+    }
+  });
+  window.addEventListener('keyup', ({ key }) => {
+    console.log(key);
+    switch (key) {
+      case 'a':
+        console.log('left');
+        keys.a.pressed = false;
+        break;
+      case 'd':
+        console.log('right');
+        keys.d.pressed = false;
+        break;
+      case ' ':
+        console.log('space');
+        keys.space.pressed = false;
+        break;
+    }
+  });
 });
