@@ -3,7 +3,7 @@
 window.addEventListener('load', () => {
   const canvas = document.getElementById('canvas1');
   const ctx = canvas.getContext('2d');
-  // console.log(canvas, ctx);
+  const playerSpeed = 5;
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -33,6 +33,13 @@ window.addEventListener('load', () => {
     draw() {
       // ctx.fillStyle = 'red';
       // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+      ctx.save();
+      // ctx.translate(player.position.x, player.position.y);
+      // ctx.translate(
+      //   player.position.x + player.width / 2,
+      //   player.position.y + player.height / 2
+      // );
+
       ctx.drawImage(
         this.image,
         this.position.x,
@@ -40,6 +47,8 @@ window.addEventListener('load', () => {
         this.width,
         this.height
       );
+      ctx.rotate(this.rotation);
+      ctx.restore();
     }
 
     update() {
@@ -67,12 +76,12 @@ window.addEventListener('load', () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     if (keys.a.pressed && player.position.x >= 0) {
-      player.velocity.x = -5;
+      player.velocity.x = -playerSpeed;
     } else if (
       keys.d.pressed &&
       player.position.x <= canvas.width - player.width
     ) {
-      player.velocity.x = 5;
+      player.velocity.x = playerSpeed;
     } else {
       player.velocity.x = 0;
     }
@@ -88,10 +97,12 @@ window.addEventListener('load', () => {
       case 'a':
         console.log('left');
         keys.a.pressed = true;
+        player.rotation = -0.15;
         break;
       case 'd':
         console.log('right');
         keys.d.pressed = true;
+        player.rotation = 0.15;
         break;
       case ' ':
         console.log('space');
@@ -105,6 +116,7 @@ window.addEventListener('load', () => {
       case 'a':
         console.log('left');
         keys.a.pressed = false;
+
         break;
       case 'd':
         console.log('right');
