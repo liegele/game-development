@@ -80,7 +80,7 @@ window.addEventListener('load', () => {
   }
 
   class Invader {
-    constructor() {
+    constructor({ position }) {
       const image = new Image();
       image.src = './images/invader.png';
       const scale = 1;
@@ -89,8 +89,8 @@ window.addEventListener('load', () => {
       this.height = image.height * scale;
 
       this.position = {
-        x: canvas.width / 2 - this.width / 2,
-        y: canvas.height / 2,
+        x: position.x,
+        y: position.y,
       };
 
       this.velocity = {
@@ -109,16 +109,62 @@ window.addEventListener('load', () => {
       );
     }
 
+    update({ velocity }) {
+      this.position.x += velocity.x;
+      this.position.y += velocity.y;
+      this.draw();
+    }
+  }
+
+  class Grid {
+    constructor() {
+      this.position = {
+        x: 0,
+        y: 0,
+      };
+
+      this.velocity = {
+        x: 3,
+        y: 0,
+      };
+
+      this.invaders = [];
+
+      const columns = Math.floor(Math.random() * 10 + 5);
+      const rows = Math.floor(Math.random() * 5 + 2);
+      // const rows = Math.floor(Math.random() * 5);
+
+      this.width = columns * 30;
+
+      for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+          this.invaders.push(
+            new Invader({ position: { x: i * 30, y: j * 30 } })
+          );
+        }
+      }
+      console.log(this.invaders);
+    }
+
     update() {
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
-      this.draw();
+
+      this.velocity.y = 0;
+
+      if (
+        this.position.x + this.width >= canvas.width ||
+        this.position.x <= 0
+      ) {
+        this.velocity.x = -this.velocity.x;
+        this.velocity.y = 30;
+      }
     }
   }
 
   const player = new Player();
   const projectiles = [];
-  const invader = new Invader();
+  const grids = [new Grid()];
 
   const keys = {
     a: {
@@ -148,13 +194,19 @@ window.addEventListener('load', () => {
     }
 
     player.update();
-    invader.update();
     projectiles.forEach((projectile, index) => {
       if (projectile.position.y + projectile.radius <= 0) {
         projectiles.splice(index, 1);
       } else {
         projectile.update();
       }
+    });
+
+    grids.forEach((grid) => {
+      grid.update();
+      grid.invaders.forEach((invader) => {
+        invader.update({ velocity: grid.velocity });
+      });
     });
 
     requestAnimationFrame(animate);
